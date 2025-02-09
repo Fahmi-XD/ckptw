@@ -3,6 +3,10 @@
 /node_modules
 /state*
 /example/*.js
+/example/state
 /temp
 .npmrc
 changes.md
+pnpm-lock.yaml
+yarn.lock
+.env

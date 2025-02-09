@@ -1,10 +1,12 @@
 {
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
     "outDir": "lib",
+    "rootDir": "src",
     "allowJs": true,
+    "typeRoots": ["src/Common/Types.d.ts"],
     "target": "es2016",
     "module": "commonjs",
     "esModuleInterop": true,

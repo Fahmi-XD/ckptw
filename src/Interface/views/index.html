@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #tooltip {
+            position: fixed;
+            display: none;
+            background: #333;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            pointer-events: none;
+            max-width: 200px;
+            z-index: 9999;
+        }
+        
+        .target {
+            margin: 100px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+    </style>
+</head>
+<body>
+    <div class="target">Hover di sini untuk melihat tooltip</div>
+    <div id="tooltip">Ini adalah tooltip yang mengikuti kursor</div>
+
+    <script>
+        const tooltip = document.getElementById('tooltip');
+        const target = document.querySelector('.target');
+
+        target.addEventListener('mouseenter', () => {
+            tooltip.style.display = 'block';
+        });
+
+        target.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (tooltip.style.display === 'block') {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // Hitung posisi tooltip
+                let left = mouseX + 10;
+                let top = mouseY + 10;
+
+                // Cek overflow horizontal
+                if (left + tooltip.offsetWidth > window.innerWidth) {
+                    left = mouseX - tooltip.offsetWidth - 10;
+                }
+
+                // Cek overflow vertikal
+                if (top + tooltip.offsetHeight > window.innerHeight) {
+                    top = mouseY - tooltip.offsetHeight - 10;
+                }
+
+                // Pastikan tidak keluar dari batas kiri/atas
+                left = Math.max(0, left);
+                top = Math.max(0, top);
+
+                // Terapkan posisi
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
+            }
+        });
+    </script>
+</body>
+</html>

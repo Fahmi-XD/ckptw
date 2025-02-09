@@ -5,6 +5,7 @@ import makeWASocket, {
   getContentType,
   proto,
   useMultiFileAuthState,
+  USyncQueryResultList,
 } from "@whiskeysockets/baileys";
 import { AuthenticationState, ConnectionState, WACallEvent } from "@whiskeysockets/baileys/lib/Types";
 
@@ -231,7 +232,7 @@ export class Client {
      * Fetch bio/about from given Jid or if the param empty will fetch the bot bio/about.
      * @param [jid] the jid.
      */
-    async fetchBio(jid?: string): Promise<undefined | { setAt: Date, status: undefined | string }> {
+    async fetchBio(jid?: string): Promise<undefined | { setAt: Date, status: undefined | string } | USyncQueryResultList[]> {
         let decodedJid = decodeJid(jid ? jid : this.core?.user?.id as string)
         let re = await this.core?.fetchStatus(decodedJid);
         return re;
@@ -258,10 +259,11 @@ export class Client {
             logger: this.logger as any,
             printQRInTerminal: this.printQRInTerminal,
             auth: this.state!,
-            browser: Browsers.ubuntu('CHROME'),
+            browser: Browsers.ubuntu('Chrome'),
             version,
             qrTimeout: this.qrTimeout,
-            markOnlineOnConnect: this.markOnlineOnConnect
+            markOnlineOnConnect: this.markOnlineOnConnect,
+            generateHighQualityLinkPreview: true
         });
 
         if(this.usePairingCode && !this.core.authState.creds.registered) {
@@ -299,7 +301,6 @@ export class Client {
                 const code = await this.core.requestPairingCode(this.phoneNumber!);
                 this.consolefy?.info(`Pairing Code: ${code}`);
                 this.consolefy?.resetTag();
-
             }, 3000)
         }
 

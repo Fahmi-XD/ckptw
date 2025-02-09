@@ -2,6 +2,8 @@ import { Collection } from "@discordjs/collection";
 import { Ctx } from "../Classes/Ctx";
 import makeWASocket, { Contact, downloadContentFromMessage, getContentType, proto, WAProto } from "@whiskeysockets/baileys"
 import { Client } from "../Classes/Client";
+import http from 'node:http';
+import EventEmitter from "node:events";
 
 export type ButtonType = 'cta_url' | 'cta_call' | 'cta_copy' | 'cta_reminder' | 'cta_cancel_reminder' | 'address_message' | 'send_location' | 'quick_reply';
 
@@ -48,7 +50,7 @@ export interface ICollectorArgs {
 }
 
 export interface ICtx {
-    _used: { prefix?: Array<string>|string, command?: string; upsert?: any; hears?: any; poll?: any; pollVote?: any; reactions?: any; };
+    _used: { prefix?: Array<string> | string, command?: string; upsert?: any; hears?: any; poll?: any; pollVote?: any; reactions?: any; };
     _args: Array<String>;
     _self: ICtxSelf;
     _client: ReturnType<typeof makeWASocket>;
@@ -88,24 +90,29 @@ export interface ICtxSelf extends Client {
 }
 
 export interface ICtxOptions {
-    used: { prefix?: Array<string>|string, command?: string; upsert?: any; hears?: any; poll?: any; pollVote?: any; reactions?: any; };
+    used: { prefix?: Array<string> | string, command?: string; upsert?: any; hears?: any; poll?: any; pollVote?: any; reactions?: any; };
     args: string[];
     self: ICtxSelf;
     client: ReturnType<typeof makeWASocket>;
 }
 
-export interface IInteractiveMessageContent { 
+export interface IInteractiveMessageContent {
     body?: string;
     footer?: string;
-    header?: (proto.Message.InteractiveMessage.IHeader|null);
-    contextInfo?: (proto.IContextInfo|null);
-    shopStorefrontMessage?: (proto.Message.InteractiveMessage.IShopMessage|null);
-    collectionMessage?: (proto.Message.InteractiveMessage.ICollectionMessage|null);
-    nativeFlowMessage?: (proto.Message.InteractiveMessage.INativeFlowMessage|null);
-    carouselMessage?: (proto.Message.InteractiveMessage.ICarouselMessage|null);
+    header?: (proto.Message.InteractiveMessage.IHeader | null);
+    contextInfo?: (proto.IContextInfo | null);
+    shopStorefrontMessage?: (proto.Message.InteractiveMessage.IShopMessage | null);
+    collectionMessage?: (proto.Message.InteractiveMessage.ICollectionMessage | null);
+    nativeFlowMessage?: (proto.Message.InteractiveMessage.INativeFlowMessage | null);
+    carouselMessage?: (proto.Message.InteractiveMessage.ICarouselMessage | null);
 }
 
 export interface IMe extends Contact {
     decodedId: string;
     readyAt?: number;
+}
+
+export interface IServer {
+    server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
+    ev: EventEmitter;
 }
