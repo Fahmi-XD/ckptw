@@ -102,7 +102,7 @@ function startServer(): IServer {
     let ch = 0;
     const listFile: string[] = [];
     const openFolder = (folder: string): void => {
-      const files = fs.readdirSync(folder);
+      const files = fs.readdirSync(folder).filter(v => path.extname(v) != ".ts");
 
       files.forEach((file: string) => {
         if (fs.statSync(path.join(folder, file)).isDirectory()) {
@@ -112,12 +112,12 @@ function startServer(): IServer {
         }
       })
     }
+
     openFolder("./src/Interface")
     listFile.forEach(file => {
-      fs.watch(file, () => {
-        ch++;
-        log.info("File Change " + ch);
-        wss.clients.forEach(client => client.send("reload"));
+      fs.watch(file, (ff, sf) => {
+        log.info("File Change", sf);
+        wss.clients.forEach(client => client.send("reload"))
       });
     });
   }

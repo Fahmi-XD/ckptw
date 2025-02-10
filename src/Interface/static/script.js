@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const gate = document.getElementById("gate");
   const dot = document.getElementById("stars");
   const startBtn = document.getElementById("start");
+  const navigation = document.getElementById("navbar");
+  const asideCanvas = document.getElementById("aside-canvas");
 
   const PARTICLE_COUNT = 20;
   const MAX_DISTANCE = 100;
@@ -19,6 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const dotCtx = dot.getContext("2d");
   dot.width = window.innerWidth;
   dot.height = window.innerHeight;
+
+  const asideCtx = asideCanvas.getContext("2d");
 
   class FlipText {
     constructor(element, text, speed = 1) {
@@ -132,7 +136,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const div = document.createElement("div");
     const divCursor = document.createElement("div");
     const rect = elem.getBoundingClientRect();
-    
+
     div.textContent = text;
     div.style.transform = `translateY(${rect.y + rect.height + 10}px)`
     divCursor.style.left = `${(elem.offsetLeft)}px`
@@ -175,7 +179,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.requestAnimationFrame(animate);
   }
 
-
   animate();
 
   const gateFragment = [
@@ -200,15 +203,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   let startTime;
+  let once = false;
 
   const moveGate = (second) => {
     if (!startTime) startTime = second;
     gateFragment.forEach((sec) => {
       if (second - startTime >= sec.delay) sec.x += GATE_SPEED;
     })
+    if (gateFragment.every(v => v.x > window.innerWidth) && !once) {
+      if (!once) {
+        once = true
+        nextt()
+      }
+    }
 
     drawGate();
-    if (gateFragment.some(section => section.x < gate.width)) {
+    if (gateFragment.some(section => section.x < gate.width + 100)) {
       window.requestAnimationFrame(moveGate)
     } else {
       gateCtx.clearRect(0, 0, gate.width, gate.heigh);
@@ -223,27 +233,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   (new FlipText(document.getElementById("thanks"), "Thank you for using this library :)", TEXT_SPEED)).run();
 
-  startBtn.addEventListener("click", async () => {
-    startBtn.style.opacity = 0;
-    const elem = document.body;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
-    }
-    document.getElementById("thanks").style.opacity = "0";
-    document.querySelector(".splash p").style.opacity = "0";
-    requestAnimationFrame(moveGate)
-    await delay(600);
+  // startBtn.addEventListener("click", async () => {
+  startBtn.style.opacity = 0;
+  // const elem = document.body;
+  // if (elem.requestFullscreen) {
+  //   elem.requestFullscreen();
+  // } else if (elem.webkitRequestFullscreen) { /* Safari */
+  //   elem.webkitRequestFullscreen();
+  // } else if (elem.msRequestFullscreen) { /* IE11 */
+  //   elem.msRequestFullscreen();
+  // }
+  document.getElementById("thanks").style.opacity = "0";
+  document.querySelector(".splash p").style.opacity = "0";
+  requestAnimationFrame(moveGate)
+  // })
+
+  async function nextt() {
     splash.style.display = "none";
-    document.querySelector(".navbar .left.kiri").classList.add("normal")
-    document.querySelector(".navbar .left.kanan").classList.add("normal")
+    document.querySelector(".navbar .left.kiri")?.classList.add("normal")
+    document.querySelector(".navbar .left.kanan")?.classList.add("normal")
     await delay(300);
-    document.querySelector(".navbar .bot").classList.add("animate-blink")
+    document.querySelector(".navbar .btn").classList.add("animate-blink")
     // pengenalan()
-  })
+  }
 
   function blurAll(except = ["body"]) {
     const filter = [];
@@ -254,10 +266,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         filter.push(e);
       }
     })
-    
+
     return filter;
   }
-  
+
   function unBlurAll(filtered) {
     filtered.forEach(e => {
       e.style.filter = "none"
@@ -288,4 +300,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     document.body.appendChild(button);
   }
-})
+
+  navbar.addEventListener("click", () => {
+    console.log("Anjay");
+  })
+
+  /**
+   * Draw grid
+   */
+  let row = 0;
+  let col = 0;
+  while (50 * row < asideCanvas.width) {
+    row += 1;
+  }
+  while (10 * col < window.innerHeight) {
+    col += 1;
+  }
+  asideCtx.strokeStyle = 'rgba(124, 122, 122, 0.15)';
+  asideCtx.lineWidth = 1;
+
+  for (let i = 0; i <= row - 1; i++) {
+    asideCtx.beginPath();
+    asideCtx.moveTo(i * 50 + 0.5, 0);
+    asideCtx.lineTo(i * 50 + 0.5, 200);
+    asideCtx.stroke();
+  }
+  
+  asideCtx.strokeStyle = 'rgba(49, 49, 49, 0.15)';
+  for (let i = 0; i <= col - 1; i++) {
+    asideCtx.beginPath();
+    asideCtx.moveTo(0, i * 5 + 0.5);
+    asideCtx.lineTo(asideCanvas.width, i * 5 + 0.5);
+    asideCtx.stroke();
+  }
+});

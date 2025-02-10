@@ -2,7 +2,7 @@
 
 :root {
   --c-bg: #26252B;
-  --c-pop: #303030;
+  --c-pop: #222222;
   --c-shadow1: #111111;
   --c-shadow2: #4e4e4e;
   --c-purple: #7D7CFC;
@@ -210,9 +210,13 @@ Navbar Style
   cursor: pointer;
 }
 
-.btn:hover {
+.btn:not(.btn:disabled):hover {
   opacity: 0.9;
   transform: scale(1.1);
+}
+
+.btn:disabled {
+  opacity: 0.5;
 }
 
 /*
@@ -246,4 +250,49 @@ Navbar Style
   50% {
     opacity: 1;
   }
+}
+
+/*
+  Aside
+*/
+.aside {
+  display: flex;
+  width: 50%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: var(--c-pop);
+  border-right: solid 1px rgba(255, 255, 255, 0.144);
+}
+
+.aside ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 50px;
+}
+
+.aside ul li {
+  list-style: none;
+  font-size: 25px;
+}
+
+.aside a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1.9px;
+}
+
+#aside-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
 }

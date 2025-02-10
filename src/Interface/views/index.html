@@ -1,71 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Grid Kotak Canvas</title>
     <style>
-        #tooltip {
-            position: fixed;
-            display: none;
-            background: #333;
-            color: white;
-            padding: 8px;
-            border-radius: 4px;
-            pointer-events: none;
-            max-width: 200px;
-            z-index: 9999;
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        
-        .target {
-            margin: 100px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            width: fit-content;
+        canvas {
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    <div class="target">Hover di sini untuk melihat tooltip</div>
-    <div id="tooltip">Ini adalah tooltip yang mengikuti kursor</div>
+    <canvas id="gridCanvas"></canvas>
 
     <script>
-        const tooltip = document.getElementById('tooltip');
-        const target = document.querySelector('.target');
+        const canvas = document.getElementById('gridCanvas');
+        const ctx = canvas.getContext('2d');
 
-        target.addEventListener('mouseenter', () => {
-            tooltip.style.display = 'block';
-        });
+        // Ukuran canvas
+        const canvasSize = 400;
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
 
-        target.addEventListener('mouseleave', () => {
-            tooltip.style.display = 'none';
-        });
+        // Jumlah kotak per baris/kolom
+        const gridSize = 10;
+        
+        // Ukuran tiap kotak
+        const cellSize = canvasSize / gridSize;
 
-        document.addEventListener('mousemove', (e) => {
-            if (tooltip.style.display === 'block') {
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-                
-                // Hitung posisi tooltip
-                let left = mouseX + 10;
-                let top = mouseY + 10;
+        // Warna dan ketebalan garis
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
 
-                // Cek overflow horizontal
-                if (left + tooltip.offsetWidth > window.innerWidth) {
-                    left = mouseX - tooltip.offsetWidth - 10;
-                }
+        // Gambar garis vertikal
+        for(let i = 0; i <= gridSize; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * cellSize + 0.5, 0);  // +0.5 untuk garis yang lebih tajam
+            ctx.lineTo(i * cellSize + 0.5, canvasSize);
+            ctx.stroke();
+        }
 
-                // Cek overflow vertikal
-                if (top + tooltip.offsetHeight > window.innerHeight) {
-                    top = mouseY - tooltip.offsetHeight - 10;
-                }
-
-                // Pastikan tidak keluar dari batas kiri/atas
-                left = Math.max(0, left);
-                top = Math.max(0, top);
-
-                // Terapkan posisi
-                tooltip.style.left = `${left}px`;
-                tooltip.style.top = `${top}px`;
-            }
-        });
+        // Gambar garis horizontal
+        for(let i = 0; i <= gridSize; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, i * cellSize + 0.5);  // +0.5 untuk garis yang lebih tajam
+            ctx.lineTo(canvasSize, i * cellSize + 0.5);
+            ctx.stroke();
+        }
     </script>
 </body>
 </html>
