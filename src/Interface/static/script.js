@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const PARTICLE_COUNT = 20;
   const MAX_DISTANCE = 100;
   const PARTICLE_SPEED = 1.1;
-  const TEXT_SPEED = 10;
+  const TEXT_SPEED = 7;
+  const GATE_SPEED = 10;
 
   let isTooltip = false;
 
@@ -203,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const moveGate = (second) => {
     if (!startTime) startTime = second;
     gateFragment.forEach((sec) => {
-      if (second - startTime >= sec.delay) sec.x += 20;
+      if (second - startTime >= sec.delay) sec.x += GATE_SPEED;
     })
 
     drawGate();
@@ -225,23 +226,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   startBtn.addEventListener("click", async () => {
     startBtn.style.opacity = 0;
     const elem = document.body;
-    // if (elem.requestFullscreen) {
-    //   elem.requestFullscreen();
-    // } else if (elem.webkitRequestFullscreen) { /* Safari */
-    //   elem.webkitRequestFullscreen();
-    // } else if (elem.msRequestFullscreen) { /* IE11 */
-    //   elem.msRequestFullscreen();
-    // }
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
     document.getElementById("thanks").style.opacity = "0";
     document.querySelector(".splash p").style.opacity = "0";
     requestAnimationFrame(moveGate)
-    await delay(500);
+    await delay(600);
     splash.style.display = "none";
     document.querySelector(".navbar .left.kiri").classList.add("normal")
     document.querySelector(".navbar .left.kanan").classList.add("normal")
     await delay(300);
     document.querySelector(".navbar .bot").classList.add("animate-blink")
-    pengenalan()
+    // pengenalan()
   })
 
   function blurAll(except = ["body"]) {

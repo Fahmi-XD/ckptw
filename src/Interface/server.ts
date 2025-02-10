@@ -37,7 +37,7 @@ function startServer(): IServer {
     };
 
     if (url == "/") {
-      ejs.renderFile("./src/interface/views/index.ejs", (err, data) => {
+      ejs.renderFile("./src/Interface/views/index.ejs", (err, data) => {
         if (err) {
           res.writeHead(500, { 'Content-Type': 'text/plain' });
           res.end('Internal Server Error');
@@ -51,7 +51,7 @@ function startServer(): IServer {
         res.end(data)
       })
     } else if (url?.startsWith("/static")) {
-      const pathh = "./src/interface";
+      const pathh = "./src/Interface";
       try {
         const fData = await fs.readFileSync(path.join(pathh, url));
         res.writeHead(200, {
@@ -112,7 +112,7 @@ function startServer(): IServer {
         }
       })
     }
-    openFolder("./src/interface")
+    openFolder("./src/Interface")
     listFile.forEach(file => {
       fs.watch(file, () => {
         ch++;

@@ -64,6 +64,7 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   font-style: normal;
+  position: relative;
   height: 100vh;
   background-color: var(--c-bg);
   color: white;
@@ -75,7 +76,7 @@ body {
 .splash {
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: fixed !important;
   top: 0;
   bottom: 0;
   width: 100vw;
@@ -88,7 +89,7 @@ body {
 }
 
 .splash h1 {
-  font-size: 20px;
+  font-size: 15px;
   margin-top: auto;
   transition: opacity 300ms;
 }
@@ -116,6 +117,7 @@ Navbar Style
   margin-top: 10px;
   justify-content: space-around;
   height: auto;
+  overflow-x: hidden;
   gap: 20px;
   padding: 10px;
 }

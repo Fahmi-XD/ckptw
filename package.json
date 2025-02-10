@@ -14,6 +14,7 @@
     "example": "pnpm build && pnpm example:build && pnpm example:run",
     "tailwind": "npx @tailwindcss/cli -i ./src/interface/static/main.css -o ./src/interface/static/style.css --watch",
     "dev": "pnpm build && ckptw --port 3030 --dev",
+    "dev:mod": "yarn build && chmod +x lib/Interface/index.js && yarn unlink && yarn link && ckptw --port 3030 --dev",
     "example:build": "tsc example/app.ts --esModuleInterop --skipLibCheck",
     "example:run": "node example/app.js",
     "build:docs": "rimraf docs && typedoc --options typedoc.json"
