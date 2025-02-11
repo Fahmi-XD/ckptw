@@ -4,11 +4,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const dot = document.getElementById("stars");
   const startBtn = document.getElementById("start");
   const navigation = document.getElementById("navbar");
+  const aside = document.querySelector(".aside");
+  const btnAside = document.querySelector(".navbar .kiri");
+  const btnAsideClose = document.querySelector(".aside #close");
   const asideCanvas = document.getElementById("aside-canvas");
 
-  const PARTICLE_COUNT = 20;
+  const PARTICLE_COUNT = 10;
   const MAX_DISTANCE = 100;
-  const PARTICLE_SPEED = 1.1;
+  const PARTICLE_SPEED = 0.5;
   const TEXT_SPEED = 7;
   const GATE_SPEED = 10;
 
@@ -23,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   dot.height = window.innerHeight;
 
   const asideCtx = asideCanvas.getContext("2d");
+  const dpi = window.devicePixelRatio;
+  asideCanvas.getContext('2d').scale(dpi, dpi);
 
   class FlipText {
     constructor(element, text, speed = 1) {
@@ -105,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       this.vy = (Math.random() - 0.5) * PARTICLE_SPEED;
       this.x = Math.random() * dot.width;
       this.y = Math.random() * dot.height;
-      this.size = Math.max(3, Math.random() * 4);
+      this.size = Math.random() * 2;
       this.opacity = Math.max(0.3, Math.random());
     }
 
@@ -174,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       v.move()
       v.drawDot()
     })
-    drawLine()
+    // drawLine()
 
     window.requestAnimationFrame(animate);
   }
@@ -196,9 +201,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const drawGate = () => {
     gateCtx.clearRect(0, 0, gate.width, gate.height);
 
-    gateCtx.fillStyle = "#111429"
+    gateCtx.fillStyle = "white"
     gateFragment.forEach((gt) => {
-      gateCtx.fillRect(gt.x, gt.y, gate.width, gate.height / 9 + 15)
+      gateCtx.fillRect(gt.x, gt.y, gate.width, (gate.height / 9) + 15)
     })
   }
 
@@ -234,18 +239,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   (new FlipText(document.getElementById("thanks"), "Thank you for using this library :)", TEXT_SPEED)).run();
 
   // startBtn.addEventListener("click", async () => {
-  startBtn.style.opacity = 0;
-  // const elem = document.body;
-  // if (elem.requestFullscreen) {
-  //   elem.requestFullscreen();
-  // } else if (elem.webkitRequestFullscreen) { /* Safari */
-  //   elem.webkitRequestFullscreen();
-  // } else if (elem.msRequestFullscreen) { /* IE11 */
-  //   elem.msRequestFullscreen();
-  // }
-  document.getElementById("thanks").style.opacity = "0";
-  document.querySelector(".splash p").style.opacity = "0";
-  requestAnimationFrame(moveGate)
+    startBtn.style.opacity = 0;
+    startBtn.classList.add("animate-blink")
+    const elem = document.body;
+    // if (elem.requestFullscreen) {
+    //   elem.requestFullscreen();
+    // } else if (elem.webkitRequestFullscreen) { /* Safari */
+    //   elem.webkitRequestFullscreen();
+    // } else if (elem.msRequestFullscreen) { /* IE11 */
+    //   elem.msRequestFullscreen();
+    // }
+    await delay(1000);    
+    document.getElementById("thanks").style.opacity = "0";
+    document.querySelector(".splash p").style.opacity = "0";
+    requestAnimationFrame(moveGate)
   // })
 
   async function nextt() {
@@ -316,7 +323,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   while (10 * col < window.innerHeight) {
     col += 1;
   }
-  asideCtx.strokeStyle = 'rgba(124, 122, 122, 0.15)';
+  asideCtx.strokeStyle = 'rgba(255, 255, 255, 1)';
   asideCtx.lineWidth = 1;
 
   for (let i = 0; i <= row - 1; i++) {
@@ -326,11 +333,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     asideCtx.stroke();
   }
   
-  asideCtx.strokeStyle = 'rgba(49, 49, 49, 0.15)';
+  asideCtx.strokeStyle = 'rgba(255, 255, 255, 1)';
   for (let i = 0; i <= col - 1; i++) {
     asideCtx.beginPath();
-    asideCtx.moveTo(0, i * 5 + 0.5);
-    asideCtx.lineTo(asideCanvas.width, i * 5 + 0.5);
+    asideCtx.moveTo(0, i * 5);
+    asideCtx.lineTo(asideCanvas.width, i * 5);
     asideCtx.stroke();
   }
+  
+  btnAside.addEventListener("click", () => {
+    aside.classList.toggle("active")
+  })
+  
+  btnAsideClose.addEventListener("click", () => {
+    aside.classList.remove("active")
+  })
 });

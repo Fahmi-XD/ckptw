@@ -33,8 +33,8 @@ server.listen(port, () => {
  * Signal to safely close the server
  */
 process.on("SIGINT", () => {
+  log.info('Server stopped.');
   server.close(() => {
-    log.info('Server stopped.');
     process.exit();
   })
 });

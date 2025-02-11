@@ -3,6 +3,8 @@
 :root {
   --c-bg: #26252B;
   --c-pop: #222222;
+  --c-pop2: #505050;
+  --c-pop3: #383838;
   --c-shadow1: #111111;
   --c-shadow2: #4e4e4e;
   --c-purple: #7D7CFC;
@@ -49,11 +51,16 @@
   border-radius: 5px;
 }
 
+canvas {
+  background-color: transparent;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 body {
@@ -65,7 +72,7 @@ body {
   overflow-x: hidden;
   font-style: normal;
   position: relative;
-  height: 100vh;
+  height: 100%;
   background-color: var(--c-bg);
   color: white;
 }
@@ -79,6 +86,7 @@ body {
   position: fixed !important;
   top: 0;
   bottom: 0;
+  color: black;
   width: 100vw;
   height: 100vh;
   /* opacity: 0; */
@@ -90,22 +98,22 @@ body {
 
 .splash h1 {
   font-size: 15px;
-  margin-top: auto;
   transition: opacity 300ms;
 }
 
 .splash p {
   font-size: 13px;
-  opacity: 0.6;
+  opacity: 0.7;
+  margin-top: 20px;
+  color: black;
   transition: opacity 300ms;
-  margin-top: auto;
-  margin-bottom: 20px;
 }
 
 .splash .btn {
   position: relative;
   transition: opacity 300ms;
   margin-top: 40px;
+  box-shadow: 0 2px 5px #7c7c7ca3, 0 -2px 5px white;
 }
 
 /*
@@ -223,7 +231,7 @@ Navbar Style
   Animation
 */
 .animate-blink {
-  animation: text-blink 600ms linear forwards;
+  animation: text-blink 700ms linear forwards;
 }
 
 .normal {
@@ -261,10 +269,15 @@ Navbar Style
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  left: -100%;
+  transition: left 200ms ease-in-out;
   z-index: 10;
   background-color: var(--c-pop);
   border-right: solid 1px rgba(255, 255, 255, 0.144);
+}
+
+.aside.active {
+  left: 0;
 }
 
 .aside ul {
@@ -279,7 +292,7 @@ Navbar Style
 
 .aside ul li {
   list-style: none;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .aside a {
@@ -295,4 +308,46 @@ Navbar Style
   height: 100%;
   position: absolute;
   z-index: -1;
+}
+
+.aside #close {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/*
+  Components
+*/
+.components {
+  display: flex;
+  width: 100%;
+  height: 50%;
+  position: fixed;
+  bottom: 0;
+  border-top: solid 1px #8a8a8a;
+  left: 0;
+  padding: 15px;
+  background-image: linear-gradient(to bottom, var(--c-pop2), var(--c-pop3));
+}
+
+/*
+  Toolbar
+*/
+.toolbar {
+  display: flex;
+  width: 55px;
+  height: 55px;
+  background-color: var(--c-purple);
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  bottom: 25px;
+  right: 25px;
+  z-index: 10;
+  border-radius: 50%;
 }
